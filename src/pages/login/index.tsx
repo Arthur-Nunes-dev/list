@@ -9,7 +9,7 @@ import {
 
 export default function Login () {
     return (
-        <View>
+        <View style>
             <View>
 
             </View>
