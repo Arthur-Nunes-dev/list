@@ -1,22 +1,31 @@
-import React from "react";
-
+import React, { useState } from "react";
 import {
      View,
      Text,
      Image,
      TextInput,
      TouchableOpacity,
+     Alert,
 } from "react-native";
-
 import { styles } from "./styles";
-
 import Logo from "../../assets/logo.png";
-
 import { MaterialIcons } from "@expo/vector-icons"
 import { themas } from "../../global/themes";
 
-
 export default function Login () {
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+
+    function getLogin() {
+        try {
+            if (!email || !password) {
+                return Alert.alert('Atenção','Informe os campos obrigatórios')
+            }
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.boxTop}>
@@ -33,6 +42,8 @@ export default function Login () {
                 <View style={styles.boxInput}>
                     <TextInput
                         style={styles.input}
+                        value={email}
+                        onChangeText={(e) => setEmail(e)}
                     />
                     <MaterialIcons
                         name="email"
@@ -46,6 +57,8 @@ export default function Login () {
                 <View style={styles.boxInput}>
                     <TextInput
                         style={styles.input}
+                        value={password}
+                        onChangeText={(e) => setPassword(e)}
                     />
                     <MaterialIcons
                         name="password"
@@ -60,6 +73,11 @@ export default function Login () {
                     <Text style={styles.titleButton}>Entrar</Text>
                 </TouchableOpacity>
             </View>
+
+            <Text style={styles.titleBottom}>
+                Não tem conta? 
+                <Text style={{color: themas.colors.primary}}> Crie agora!</Text>
+            </Text>
         </View>
     )
 }

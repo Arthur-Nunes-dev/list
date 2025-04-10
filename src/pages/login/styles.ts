@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         flexDirection: 'row',
         alignItems: "center",
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         backgroundColor: themas.colors.lightGray,
         borderColor: themas.colors.lightGray,
     },
@@ -68,17 +68,30 @@ export const styles = StyleSheet.create({
     },
 
     button: {
-        width: 200,
+        width: 250,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: themas.colors.primary,
         borderRadius: 40,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        textShadowRadius: 4.65,
+        elevation: 7.
     },
 
     titleButton: {
         fontSize: 16,
         color: "#FFFF",
         fontWeight: "bold",
+    },
+
+    titleBottom: {
+        fontSize: 16,
+        color: themas.colors.gray,
     },
 })
