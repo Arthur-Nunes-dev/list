@@ -15,14 +15,20 @@ import { themas } from "../../global/themes";
 export default function Login () {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [loading,steLoading] = useState(false);
 
-    function getLogin() {
+    async function getLogin() {
         try {
             if (!email || !password) {
                 return Alert.alert('Atenção','Informe os campos obrigatórios')
             }
+
+            setTimeout(() => {
+                Alert.alert('Logado com sucesso!')
+            },3000)
+
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
@@ -69,7 +75,7 @@ export default function Login () {
             </View>
 
             <View style={styles.boxBottom}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={getLogin}>
                     <Text style={styles.titleButton}>Entrar</Text>
                 </TouchableOpacity>
             </View>
