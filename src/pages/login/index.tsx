@@ -6,6 +6,7 @@ import {
      TextInput,
      TouchableOpacity,
      Alert,
+     ActivityIndicator,
 } from "react-native";
 import { styles } from "./styles";
 import Logo from "../../assets/logo.png";
@@ -19,12 +20,19 @@ export default function Login () {
 
     async function getLogin() {
         try {
+            steLoading(true)
+
             if (!email || !password) {
                 return Alert.alert('Atenção','Informe os campos obrigatórios')
             }
 
             setTimeout(() => {
-                Alert.alert('Logado com sucesso!')
+                if(email == 'arthurnunesdev@gmail.com' && password == '@arthur32'){
+                    Alert.alert('Logado com sucesso!')
+                } else {
+                    Alert.alert('Usuario não encontrado!')
+                }
+                steLoading(false)
             },3000)
 
         } catch (error) {
@@ -76,7 +84,11 @@ export default function Login () {
 
             <View style={styles.boxBottom}>
                 <TouchableOpacity style={styles.button} onPress={getLogin}>
-                    <Text style={styles.titleButton}>Entrar</Text>
+                    {loading ?
+                        <ActivityIndicator /> 
+                    : 
+                        <Text style={styles.titleButton}>Entrar</Text>
+                    }
                 </TouchableOpacity>
             </View>
 
