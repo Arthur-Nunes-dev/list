@@ -6,10 +6,14 @@ import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { themas } from "../../global/themes";
 import { Input } from "../../components/input";
 import { Buttom } from "../../components/Buttom";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 export default function Login () {
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+
+    const navigation = useNavigation<NavigationProp<any>>();
+
+    const [email,setEmail] = useState('Admin');
+    const [password,setPassword] = useState('Admin');
     const [showPassword, setShowPassword] = useState(true);
     const [loading,steLoading] = useState(false);
 
@@ -22,16 +26,18 @@ export default function Login () {
             }
 
             setTimeout(() => {
-                if(email == 'admin' && password == 'admin'){
-                    Alert.alert('Logado com sucesso!')
+                if(email == 'Admin' && password == 'Admin'){
+                    navigation.navigate("BottomRoutes")
                 } else {
                     Alert.alert('Usuario não encontrado!')
-                }
+                } 
                 steLoading(false)
             },3000)
+
         } catch (error) {
             console.log(error)
         }
+
     }
 
     return (
