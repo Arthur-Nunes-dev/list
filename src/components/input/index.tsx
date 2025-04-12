@@ -25,20 +25,30 @@ export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) =
 
     const calculateSizeWidth = () => {
         if(IconLeft && IconRight) {
-            return '80%'
+            return '80%';
         } else if(IconLeft || IconRight) {
-            return '90%'
+            return '90%';
         } else {
-            return '100%'
+            return '100%';
+        }
+    }
+
+    const calculateSizePaddingLeft = () => {
+        if(IconLeft && IconRight) {
+            return 0;
+        } else if(IconLeft || IconRight) {
+            return 10;
+        } else {
+            return 20;
         }
     }
 
     return (
         <>
-            <Text style={inputStyle.titleInput}>{title}</Text>
-            <View style={inputStyle.boxInput}>
+            {title && <Text style={inputStyle.titleInput}>{title}</Text>}
+            <View style={[inputStyle.boxInput,{paddingLeft: calculateSizePaddingLeft()}]}>
                 {IconLeft && iconLeftName && (
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onIconLeftPress} style={inputStyle.Button}>
                         <IconLeft
                         name={iconLeftName as any}
                         size={20}
@@ -49,12 +59,13 @@ export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) =
                 )}
                 <TextInput
                     style={[
-                        inputStyle.input, {width:calculateSizeWidth()}
+                        inputStyle.input,
+                        {width:calculateSizeWidth()}
                     ]}
                     {...rest}
                 />
                 {IconRight && iconRightName && (
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onIconRightPress} style=     {inputStyle.Button}>
                         <IconRight
                         name={iconRightName as any}
                         size={20}

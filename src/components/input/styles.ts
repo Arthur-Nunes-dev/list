@@ -30,4 +30,8 @@ export const inputStyle = StyleSheet.create({
     Icon: {
         width: "100%",
     },
+
+    Button: {
+        width: '10%',
+    },
 })
