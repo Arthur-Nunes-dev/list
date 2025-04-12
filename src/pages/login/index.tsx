@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import Logo from "../../assets/logo.png";
-import { MaterialIcons } from "@expo/vector-icons"
+import { MaterialIcons, Octicons } from "@expo/vector-icons"
 import { themas } from "../../global/themes";
+import { Input } from "../../components/input";
 
 export default function Login () {
     const [email,setEmail] = useState('');
@@ -52,8 +53,21 @@ export default function Login () {
             </View>
 
             <View style={styles.boxMid}>
-                <Text style={styles.titleInput}>ENDEREÇO DE E-MAIL</Text>
-                <View style={styles.boxInput}>
+                <Input 
+                    value={email}
+                    title="ENDEREÇO E-MAIL"
+                    IconRight={MaterialIcons}
+                    iconRightName="email"
+                    onChangeText={setEmail}
+                />
+                <Input 
+                    value={password}
+                    title="SENHA"
+                    IconRight={Octicons}
+                    iconRightName="eye-closed"
+                    onChangeText={setPassword}
+                />
+                {/*<View style={styles.boxInput}>
                     <TextInput
                         style={styles.input}
                         value={email}
@@ -79,7 +93,7 @@ export default function Login () {
                         size={20}
                         color={themas.colors.gray}
                     />
-                </View>
+                </View>*/}
             </View>
 
             <View style={styles.boxBottom}>
