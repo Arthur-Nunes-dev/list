@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { style } from "./style";
 
@@ -6,8 +6,11 @@ import {Ionicons, FontAwesome, Entypo, AntDesign, MaterialIcons} from "@expo/vec
 import { themas } from "../../global/themes";
 
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { AuthContextList } from "../../context/authContext-list";
 
 export default ({ state, navigation }: BottomTabBarProps) => {
+
+    const {onOpen} = useContext<any>(AuthContextList)
 
     const go = (screenName:string) => {
         navigation.navigate(screenName)
@@ -25,7 +28,7 @@ export default ({ state, navigation }: BottomTabBarProps) => {
                     }}
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={style.tabItemButtom}>
+            <TouchableOpacity style={style.tabItemButtom} onPress={() => onOpen()}>
                 <View style={{ width: '100%', left: 10, top: 4 }}>
                     <Entypo 
                         name="plus"

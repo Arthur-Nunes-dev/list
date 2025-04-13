@@ -1,5 +1,5 @@
 import React, { forwardRef, LegacyRef } from "react";
-import { View, Text,TextInput, TextInputProps, TouchableOpacity } from "react-native";
+import { View, Text,TextInput, TextInputProps, TouchableOpacity, StyleProp, TextStyle } from "react-native";
 import { FontAwesome, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { themas } from "../../global/themes";
 import { inputStyle } from "./styles"
@@ -17,11 +17,13 @@ type Props = TextInputProps & {
     title?: string,
     onIconLeftPress?: () => void,
     onIconRightPress?: () => void,
+    heigth?: number,
+    labelStyle?: StyleProp<TextStyle>
 }
 
 export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) => {
 
-    const {IconLeft, IconRight, iconLeftName, iconRightName, title,onIconLeftPress, onIconRightPress, ...rest } = Props
+    const {IconLeft, IconRight, iconLeftName, iconRightName, title,onIconLeftPress, onIconRightPress, labelStyle, heigth, ...rest } = Props
 
     const calculateSizeWidth = () => {
         if(IconLeft && IconRight) {
@@ -45,8 +47,8 @@ export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) =
 
     return (
         <>
-            {title && <Text style={inputStyle.titleInput}>{title}</Text>}
-            <View style={[inputStyle.boxInput,{paddingLeft: calculateSizePaddingLeft()}]}>
+            {title && <Text style={[inputStyle.titleInput,labelStyle]}>{title}</Text>}
+            <View style={[inputStyle.boxInput,{paddingLeft: calculateSizePaddingLeft(), height:heigth || 40}]}>
                 {IconLeft && iconLeftName && (
                     <TouchableOpacity onPress={onIconLeftPress} style={inputStyle.Button}>
                         <IconLeft
@@ -60,7 +62,7 @@ export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) =
                 <TextInput
                     style={[
                         inputStyle.input,
-                        {width:calculateSizeWidth()}
+                        {width:calculateSizeWidth(),height:'100%'}
                     ]}
                     {...rest}
                 />
