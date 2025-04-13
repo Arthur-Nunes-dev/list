@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 
 export default function User () {
     return (
-        <Text>
-            Ola mundo usuario!
-        </Text>
+        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+            <Text>User</Text>
+        </View>
     )
 }

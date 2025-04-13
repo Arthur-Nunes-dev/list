@@ -27,7 +27,7 @@ export default function Login () {
 
             setTimeout(() => {
                 if(email == 'Admin' && password == 'Admin'){
-                    navigation.navigate("BottomRoutes")
+                    navigation.reset({routes:[{name:"BottomRoutes"}]})
                 } else {
                     Alert.alert('Usuario não encontrado!')
                 } 
