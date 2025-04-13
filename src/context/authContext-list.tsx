@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useRef } from "react";
-import { Dimensions, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import { Dimensions, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { Flag } from "../components/Flag";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { themas } from "../global/themes";
+import CustomDateTimePicker from "../components/CustomDateTimePicker";
 
 export const AuthContextList:any = createContext({});
 
@@ -15,10 +16,19 @@ const flags = [
 
 export const AuthProviderList = (props:any):any => {
   const modalizeRef = useRef<Modalize>(null);
+  const [title,setTitle] = useState('');
+  const [description,setDescription] = useState('');
+  const [selectedFlag,setSelectedFlag] = useState('urgente');
+  const [selectedDate,setSelectedDate] = useState(new Date());
+  const [selectedTime,setSelectedTime] = useState(new Date());
 
   const onOpen = () => {
     modalizeRef?.current?.open()
   };
+
+  const onClose = () => {
+    modalizeRef?.current?.close()
+  }
 
   useEffect(() =>{
     onOpen()
@@ -31,17 +41,20 @@ export const AuthProviderList = (props:any):any => {
           <Flag
             caption={item.caption}
             color={item.color}
+            // selected
           />
         </TouchableOpacity>
-      ))
-    )
+      )))
   }
 
   const _container = () => {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios'?'padding':'height'}
+      >
         <View style={styles.header}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onClose()}>
             <MaterialIcons 
               name="close"
               size={30}
@@ -57,8 +70,10 @@ export const AuthProviderList = (props:any):any => {
         </View>
         <View style={styles.content}>
           <Input
-            title="Tituço:"
+            title="Titulo:"
             labelStyle={styles.label}
+            value={title}
+            onChangeText={setTitle}
           />
           <Input
             title="Descrição:"
@@ -66,12 +81,20 @@ export const AuthProviderList = (props:any):any => {
             heigth={100}
             multiline
             numberOfLines={5}
+            value={description}
+            onChangeText={setDescription}
           />
 
           <View style={{width: '40%'}}>
-            <Input
+            {/* <Input
               title="Tempo limite:"
               labelStyle={styles.label}
+            /> */}
+            <CustomDateTimePicker
+              onDateChange={()=>{}}
+              setShow={()=>{}}
+              show={true}
+              type={'date'}
             />
           </View>
           <View style={styles.containerFlag}>
@@ -81,8 +104,7 @@ export const AuthProviderList = (props:any):any => {
             </View>
           </View>
         </View>
-      </View>
-      
+      </KeyboardAvoidingView> 
     )
   }
 
