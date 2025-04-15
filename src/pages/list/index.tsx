@@ -1,11 +1,12 @@
-import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { Input } from "../../components/input";
-import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { listStyles } from "./styles";
+import React, { useContext } from "react";
 import { Ball } from "../../components/Ball";
 import { Flag } from "../../components/Flag";
 import { themas } from "../../global/themes";
+import { Input } from "../../components/input";
+import { MaterialIcons, Octicons } from "@expo/vector-icons";
+import { AuthContextList } from "../../context/authContext-list";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 
 type PropCard = {
   item:number,
@@ -16,6 +17,7 @@ type PropCard = {
 
 export default function List () {
 
+  const {taskList} = useContext<AuthContextType>(AuthContextList)
 
   const _renderCard = (item:PropCard) => {
     return (
@@ -48,7 +50,7 @@ export default function List () {
         </View>
         <View style={listStyles.boxList}>
         <FlatList
-          data={data}
+          data={taskList}
           style={{marginTop:40,paddingHorizontal:30}}
           keyExtractor={(item, index) => item.item.toString()}
           renderItem={({ item, index }) => {return(_renderCard(item))}}
