@@ -48,7 +48,7 @@ export const Input = forwardRef((Props:Props,ref: LegacyRef<TextInput> | null) =
     return (
         <>
             {title && <Text style={[inputStyle.titleInput,labelStyle]}>{title}</Text>}
-            <View style={[inputStyle.boxInput,{paddingLeft: calculateSizePaddingLeft(), height:heigth || 40}]}>
+            <View style={[inputStyle.boxInput,{paddingLeft: calculateSizePaddingLeft(), height:heigth || 40, padding: 1}]}>
                 {IconLeft && iconLeftName && (
                     <TouchableOpacity onPress={onIconLeftPress} style={inputStyle.Button}>
                         <IconLeft
