@@ -14,28 +14,8 @@ type PropCard = {
   flag: 'urgente' | 'opcional'
 }
 
-const data:Array<PropCard> = [
-  {
-    item: 0,
-    title: 'Realizar a lição de casa!',
-    description: 'página 10 a 20',
-    flag: 'urgente',
-  },
-  {
-    item: 1,
-    title: 'Passear com cachorro!',
-    description: 'página 10 a 20',
-    flag: 'urgente',
-  },
-  {
-    item: 2,
-    title: 'Sair pra tomar açai!',
-    description: 'página 10 a 20',
-    flag: 'urgente',
-  },
-]
-
 export default function List () {
+
 
   const _renderCard = (item:PropCard) => {
     return (
