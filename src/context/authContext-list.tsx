@@ -6,7 +6,7 @@ import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Dimensions, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
+import { Dimensions, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from "react-native";
 
 export const AuthContextList:any = createContext({});
 
@@ -16,15 +16,16 @@ const flags = [
 ]
 
 export const AuthProviderList = (props:any):any => {
-  const modalizeRef = useRef<Modalize>(null);
+  const [item, setItem] = useState(0);
   const [title,setTitle] = useState('');
+  const modalizeRef = useRef<Modalize>(null);
+  const [taskList, setTaskList] = useState([]);
   const [description,setDescription] = useState('');
   const [selectedFlag,setSelectedFlag] = useState('urgente');
   const [selectedDate,setSelectedDate] = useState(new Date());
   const [selectedTime,setSelectedTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [item, setItem] = useState(0);
 
   const onOpen = () => {
     modalizeRef?.current?.open()
@@ -64,8 +65,10 @@ export const AuthProviderList = (props:any):any => {
   };
 
   // salva as informações localmente em um JSON
-  const handleSave = () => {
-    
+  const handleSave = async() => {
+    if(!title || !description || !selectedFlag) {
+      return Alert.alert('Atenção!', 'Preencha os campos corretamente!')
+    }
     try {
       const newItem = {
         item: Date.now(),
@@ -80,10 +83,32 @@ export const AuthProviderList = (props:any):any => {
           selectedTime.getMinutes(),
         ).toISOString(),
       }
+
+      const storageData = await AsyncStorage.getItem('taskList');
+      let taskList = storageData ? JSON.parse(storageData):[]
+      
+      // console.log(storageData)
+
+      taskList.push(newItem)
+
+      await AsyncStorage.setItem('taskList',JSON.stringify(taskList))
+
+      setTaskList(taskList)
+      setData()
+      onClose()
       
     } catch (error) {
       console.log("Erro ao salvar o item:",error)
     }
+  };
+
+  const setData = () => {
+    setTitle('')
+    setDescription('')
+    setSelectedFlag('urgente')
+    setItem(0)
+    setSelectedDate(new Date());
+    setSelectedTime(new Date());
   };
 
   const _container = () => {
@@ -177,7 +202,7 @@ export const AuthProviderList = (props:any):any => {
   }
 
   return (
-    <AuthContextList.Provider value={{onOpen}}>
+    <AuthContextList.Provider value={{onOpen,taskList}}>
       {props.children}
       <Modalize
         ref={modalizeRef}
