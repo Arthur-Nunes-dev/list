@@ -1,11 +1,12 @@
+import { Flag } from "../components/Flag";
+import { themas } from "../global/themes";
+import { Input } from "../components/input";
+import { Modalize } from "react-native-modalize";
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomDateTimePicker from "../components/CustomDateTimePicker";
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Dimensions, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
-import { Modalize } from "react-native-modalize";
-import { Input } from "../components/input";
-import { Flag } from "../components/Flag";
-import { MaterialIcons, AntDesign } from "@expo/vector-icons";
-import { themas } from "../global/themes";
-import CustomDateTimePicker from "../components/CustomDateTimePicker";
 
 export const AuthContextList:any = createContext({});
 
@@ -21,8 +22,9 @@ export const AuthProviderList = (props:any):any => {
   const [selectedFlag,setSelectedFlag] = useState('urgente');
   const [selectedDate,setSelectedDate] = useState(new Date());
   const [selectedTime,setSelectedTime] = useState(new Date());
-   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [item, setItem] = useState(0);
 
   const onOpen = () => {
     modalizeRef?.current?.open()
@@ -33,17 +35,22 @@ export const AuthProviderList = (props:any):any => {
   }
 
   useEffect(() =>{
-    onOpen()
+    // onOpen()
   },[])
 
   const _renderFlags = () => {
     return (
       flags.map((item,index) => (
-        <TouchableOpacity key={index}>
+        <TouchableOpacity
+          key={index}
+          onPress={() => {
+            setSelectedFlag(item.caption)
+          }}
+        >
           <Flag
             caption={item.caption}
             color={item.color}
-            selected={selectedFlag === item.caption}
+            selected={item.caption == selectedFlag}
           />
         </TouchableOpacity>
       )))
@@ -54,7 +61,30 @@ export const AuthProviderList = (props:any):any => {
   };
   const handleTimeChange = (date:any) => {
     setSelectedTime(date);
-  }
+  };
+
+  // salva as informações localmente em um JSON
+  const handleSave = () => {
+    
+    try {
+      const newItem = {
+        item: Date.now(),
+        title,
+        description,
+        flags: selectedFlag,
+        timeLimite: new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate(),
+          selectedTime.getHours(),
+          selectedTime.getMinutes(),
+        ).toISOString(),
+      }
+      
+    } catch (error) {
+      console.log("Erro ao salvar o item:",error)
+    }
+  };
 
   const _container = () => {
     return (
@@ -70,7 +100,7 @@ export const AuthProviderList = (props:any):any => {
             />
           </TouchableOpacity>
           <Text style={styles.title}>Criar tarefa</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSave()}>
             <AntDesign 
               name="check"
               size={30}
