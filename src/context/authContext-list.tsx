@@ -36,7 +36,7 @@ export const AuthProviderList = (props:any):any => {
   }
 
   useEffect(() =>{
-    // onOpen()
+    get_taskList()
   },[])
 
   const _renderFlags = () => {
@@ -74,7 +74,7 @@ export const AuthProviderList = (props:any):any => {
         item: Date.now(),
         title,
         description,
-        flags: selectedFlag,
+        flag: selectedFlag,
         timeLimite: new Date(
           selectedDate.getFullYear(),
           selectedDate.getMonth(),
@@ -110,6 +110,16 @@ export const AuthProviderList = (props:any):any => {
     setSelectedDate(new Date());
     setSelectedTime(new Date());
   };
+
+  async function get_taskList() {
+    try {
+      const storageData = await AsyncStorage.getItem('taskList');
+      const taskList = storageData ? JSON.parse(storageData):[]
+      setTaskList(taskList)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const _container = () => {
     return (

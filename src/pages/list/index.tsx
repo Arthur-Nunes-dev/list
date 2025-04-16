@@ -20,6 +20,8 @@ export default function List () {
   const {taskList} = useContext<AuthContextType>(AuthContextList)
 
   const _renderCard = (item:PropCard) => {
+    const color = item.flag == 'opcional'?themas.colors.blueLigth:themas.colors.red
+
     return (
       <TouchableOpacity style={listStyles.card}>
         <View style={listStyles.rowCard}>
@@ -30,7 +32,10 @@ export default function List () {
               <Text style={listStyles.descriptionCard}>{item.description}</Text>
             </View>
           </View>
-          <Flag caption="urgente" color={themas.colors.red}/>
+          <Flag 
+            caption={item.flag}
+            color={color}
+          />
         </View>
       </TouchableOpacity>
     )
