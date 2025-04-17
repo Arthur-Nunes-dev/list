@@ -55,4 +55,20 @@ export const listStyles = StyleSheet.create ({
   descriptionCard: {
     color: themas.colors.gray
   },
+  buttonDelet: {
+    backgroundColor: themas.colors.red,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  buttonEdit: {
+    backgroundColor: themas.colors.blueLigth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
 })

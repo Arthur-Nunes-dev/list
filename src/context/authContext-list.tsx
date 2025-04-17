@@ -71,11 +71,11 @@ export const AuthProviderList = (props:any):any => {
     }
     try {
       const newItem = {
-        item: Date.now(),
+        item:item !== 0?item:Date.now(),
         title,
         description,
         flag: selectedFlag,
-        timeLimite: new Date(
+        timeLimit: new Date(
           selectedDate.getFullYear(),
           selectedDate.getMonth(),
           selectedDate.getDate(),
@@ -85,11 +85,15 @@ export const AuthProviderList = (props:any):any => {
       }
 
       const storageData = await AsyncStorage.getItem('taskList');
-      let taskList = storageData ? JSON.parse(storageData):[]
-      
-      // console.log(storageData)
+      let taskList = storageData ? JSON.parse(storageData):[];
 
-      taskList.push(newItem)
+      const itemIndex = taskList.findIndex((task:any) => task.item === newItem.item) // Retorna qual item e no array
+
+      if (itemIndex >= 0) {
+        taskList[itemIndex] = newItem
+      } else {
+        taskList.push(newItem)
+      }
 
       await AsyncStorage.setItem('taskList',JSON.stringify(taskList))
 
@@ -120,6 +124,39 @@ export const AuthProviderList = (props:any):any => {
       console.log(error)
     }
   }
+
+  const handleDelete = async (itemToDelete:any) => {
+    try {
+      const storageData = await AsyncStorage.getItem('taskList')
+      const taskList:Array<any> = storageData ? JSON.parse(storageData):[]
+
+      const updatedTaskList:any = taskList.filter(item => item.item !== itemToDelete.item) // Filtra os dados, carrega todos os itens menos o que esta sendo deletado
+
+      await AsyncStorage.setItem('taskList',JSON.stringify(updatedTaskList))
+      setTaskList(updatedTaskList)
+    } catch (error) {
+      console.log('Erro ao excluir o item',error)
+    }
+  };
+
+  const handleEdit = async (itemToEdit:PropCard) => {
+    try {
+      setTitle(itemToEdit.title);
+      setDescription(itemToEdit.description);
+      setItem(itemToEdit.item);
+      setSelectedFlag(itemToEdit.flag);
+
+      const timeLimit = new Date(itemToEdit.timeLimit);
+      setSelectedDate(timeLimit);
+      setSelectedTime(timeLimit);
+
+      onOpen()
+    } catch (error) {
+      console.log('Erro ao editar o item',error)
+    }
+  };
+  
+  
 
   const _container = () => {
     return (
@@ -212,7 +249,7 @@ export const AuthProviderList = (props:any):any => {
   }
 
   return (
-    <AuthContextList.Provider value={{onOpen,taskList}}>
+    <AuthContextList.Provider value={{onOpen,taskList,handleDelete,handleEdit}}>
       {props.children}
       <Modalize
         ref={modalizeRef}
