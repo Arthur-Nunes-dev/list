@@ -22,16 +22,16 @@ export default function Login () {
             steLoading(true)
 
             if (!email || !password) {
-                return Alert.alert('Atenção','Informe os campos obrigatórios')
+                return Alert.alert('Atenção 1','Informe os campos obrigatórios!')
             }
 
             setTimeout(() => {
                 if(email == 'Admin' && password == 'Admin'){
                     navigation.reset({routes:[{name:"BottomRoutes"}]})
+                    steLoading(false)
                 } else {
-                    Alert.alert('Usuario não encontrado!')
-                } 
-                steLoading(false)
+                    Alert.alert('Atenção 2','Senha ou e-mail inválido!')
+                }
             },3000)
 
         } catch (error) {

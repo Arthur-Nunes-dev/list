@@ -16,16 +16,17 @@ const flags = [
 ]
 
 export const AuthProviderList = (props:any):any => {
-  const [item, setItem] = useState(0);
+  const [item,setItem] = useState(0);
   const [title,setTitle] = useState('');
   const modalizeRef = useRef<Modalize>(null);
-  const [taskList, setTaskList] = useState([]);
   const [description,setDescription] = useState('');
+  const [showTimePicker,setShowTimePicker] = useState(false);
+  const [showDatePicker,setShowDatePicker] = useState(false);
   const [selectedFlag,setSelectedFlag] = useState('urgente');
   const [selectedDate,setSelectedDate] = useState(new Date());
   const [selectedTime,setSelectedTime] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [taskList,setTaskList] = useState<Array<PropCard>>([]);
+  const [taskListBackup,setTaskListBackup] = useState<Array<PropCard>>([]);
 
   const onOpen = () => {
     modalizeRef?.current?.open()
@@ -98,6 +99,7 @@ export const AuthProviderList = (props:any):any => {
       await AsyncStorage.setItem('taskList',JSON.stringify(taskList))
 
       setTaskList(taskList)
+      setTaskListBackup(taskList)
       setData()
       onClose()
       
@@ -120,6 +122,7 @@ export const AuthProviderList = (props:any):any => {
       const storageData = await AsyncStorage.getItem('taskList');
       const taskList = storageData ? JSON.parse(storageData):[]
       setTaskList(taskList)
+      setTaskListBackup(taskList)
     } catch (error) {
       console.log(error)
     }
@@ -134,6 +137,7 @@ export const AuthProviderList = (props:any):any => {
 
       await AsyncStorage.setItem('taskList',JSON.stringify(updatedTaskList))
       setTaskList(updatedTaskList)
+      setTaskListBackup(updatedTaskList)
     } catch (error) {
       console.log('Erro ao excluir o item',error)
     }
@@ -155,8 +159,25 @@ export const AuthProviderList = (props:any):any => {
       console.log('Erro ao editar o item',error)
     }
   };
-  
-  
+
+  // Pesquisa a tarefa
+  const filter = (t:string) => {
+    const array = taskListBackup;
+    const campos = ['title','description'];
+    if (t) {
+      const searchTerm = t.trim().toLowerCase();
+      const filteredArray = array.filter((item:any) => {
+        for(let i = 0; i < campos.length; i++) {
+          if (item[campos[i]].trim().toLowerCase().includes(searchTerm))
+            return true
+        }
+      });
+
+      setTaskList(filteredArray);
+    } else {
+      setTaskList(array)
+    };
+  };
 
   const _container = () => {
     return (
@@ -249,7 +270,7 @@ export const AuthProviderList = (props:any):any => {
   }
 
   return (
-    <AuthContextList.Provider value={{onOpen,taskList,handleDelete,handleEdit}}>
+    <AuthContextList.Provider value={{onOpen,taskList,handleDelete,handleEdit,filter}}>
       {props.children}
       <Modalize
         ref={modalizeRef}

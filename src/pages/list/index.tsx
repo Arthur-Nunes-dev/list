@@ -12,7 +12,7 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 
 export default function List () {
 
-  const {taskList,handleDelete,handleEdit} = useContext<AuthContextType>(AuthContextList);
+  const {taskList,handleDelete,handleEdit,filter} = useContext<AuthContextType>(AuthContextList);
   const swipeableRefs = useRef<(Swipeable | null)[]>([]);
 
   const renderRightActions = () => {
@@ -87,7 +87,7 @@ export default function List () {
             <Input 
               IconLeft={Octicons}
               iconLeftName="search"
-              
+              onChangeText={(t) => filter(t)}
             />
           </View>
         </View>
